@@ -1,29 +1,82 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-navigation-drawer app mini-variant>
+      <v-toolbar flat class="toolbar">
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-icon>menu</v-icon>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list>
+      </v-toolbar>
+      <v-divider></v-divider>
+      <v-list dense class="pt-0">
+        <v-list-tile @click="$router.push('/')">
+          <v-list-tile-action>
+            <v-icon>home</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Home</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <template v-if="isLoggedIn">
+          <v-list-tile @click="logout" title="Log out">
+            <v-list-tile-action>
+              <v-icon>rowing</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Logout</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
+        <template v-else>
+          <v-list-tile @click="$router.push('/login')" title="Log in">
+            <v-list-tile-action>
+              <v-icon>input</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Login</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+    <v-content>
+      <v-container fluid fill-height>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+    <v-snackbar
+      v-for="notification in notifications" :key="notification.id"
+      :timeout="notification.timeout"
+      :color="notification.type"
+      top center
+      @input="removeNotification(notification)"
+      :value="true"
+    >
+      {{ notification.message }}
+      <v-btn flat @click.native="removeNotification(notification)">&times;</v-btn>
+    </v-snackbar>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+  import { mapActions, mapState, mapGetters } from 'vuex'
+
+  export default {
+    computed: {
+      ...mapState(['notifications']),
+      ...mapGetters(['isLoggedIn'])
+    },
+    methods: {
+      ...mapActions(['logout', 'removeNotification'])
     }
   }
-}
+</script>
+
+<style scoped lang="scss">
+  .toolbar {
+    text-align: center;
+  }
 </style>
