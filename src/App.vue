@@ -1,16 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app mini-variant>
-      <v-toolbar flat class="toolbar">
-        <v-list>
-          <v-list-tile>
-            <v-list-tile-action>
-              <v-icon>menu</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list>
-      </v-toolbar>
-      <v-divider></v-divider>
+    <v-navigation-drawer app mini-variant v-model="isVisibleMenu">
       <v-list dense class="pt-0">
         <v-list-tile @click="$router.push('/')">
           <v-list-tile-action>
@@ -43,6 +33,12 @@
       </v-list>
     </v-navigation-drawer>
     <v-content>
+      <v-toolbar>
+        <v-btn icon @click="isVisibleMenu = !isVisibleMenu">
+          <v-icon>menu</v-icon>
+        </v-btn>
+        <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
+      </v-toolbar>
       <v-container fluid fill-height>
         <router-view></router-view>
       </v-container>
@@ -65,18 +61,23 @@
   import { mapActions, mapState, mapGetters } from 'vuex'
 
   export default {
+    data: () => ({
+      isVisibleMenu: false
+    }),
     computed: {
-      ...mapState(['notifications']),
+      ...mapState(['pageTitle']),
+      ...mapState('notifications', {
+        notifications: 'stack'
+      }),
       ...mapGetters(['isLoggedIn'])
     },
     methods: {
-      ...mapActions(['logout', 'removeNotification'])
+      ...mapActions('notifications', { removeNotification: 'remove' }),
+
+      logout() {
+        return this.$store.dispatch('logout')
+          .then(() => this.$router.replace('/'))
+      }
     }
   }
 </script>
-
-<style scoped lang="scss">
-  .toolbar {
-    text-align: center;
-  }
-</style>

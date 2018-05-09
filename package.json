@@ -7,8 +7,8 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@casl/ability": "^2.0.1",
-    "@casl/vue": "^0.1.1",
+    "@casl/ability": "^2.2.0",
+    "@casl/vue": "^0.2.0",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.11",

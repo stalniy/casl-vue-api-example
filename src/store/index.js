@@ -1,46 +1,31 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import storage from './storage'
+import { abilityPlugin } from './ability'
+import notifications from './notifications'
+import articles from './articles'
+import http from '../services/http'
 
 Vue.use(Vuex)
 
-const API_URL = 'http://localhost:3000/api'
-let COUNTER = 0
-
-function http(url, options) {
-  return fetch(url, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    ...options
-  }).then(response => {
-    return response.json().then(body => ({
-      body,
-      status: response.status
-    }))
-  }).then(response => {
-
-    if (response.status >= 200 && response.status < 300) {
-      return response
-    }
-
-    throw new Error(response.body.message || response.body.errors.join('\n'))
-  })
-}
-
-export default new Vuex.Store({
+const store = new Vuex.Store({
   plugins: [
     storage({
       storedKeys: ['token', 'rules'],
       destroyOn: ['destroySession']
-    })
+    }),
+    abilityPlugin
   ],
+
+  modules: {
+    notifications,
+    articles
+  },
 
   state: {
     token: '',
     rules: [],
-    notifications: []
+    pageTitle: 'CASL + VUE + VUEX + REST API'
   },
 
   getters: {
@@ -53,51 +38,37 @@ export default new Vuex.Store({
     createSession(state, session) {
       state.token = session.token
       state.rules = session.rules
+      http.token = session.token
     },
 
     destroySession(state) {
       state.token = ''
       state.rules = []
-    },
-
-    addNotification(state, message) {
-      state.notifications.push(message)
-    },
-
-    removeNotification(state, message) {
-      state.notifications = state.notifications.filter(m => m !== message)
     }
   },
 
   actions: {
     login({ commit }, details) {
-      return http(`${API_URL}/session`, { method: 'POST', body: JSON.stringify(details) })
-        .then(response => {
-          commit('createSession', response.body)
-          return response.body
-        })
+      return http('/session', { method: 'POST', body: JSON.stringify(details) })
+        .then(response => commit('createSession', response.body))
     },
 
     logout({ commit }) {
       commit('destroySession')
     },
 
-    notify({ commit }, message) {
-      commit('addNotification', {
-        timeout: 3000,
-        type: 'info',
-        ...message,
-        id: ++COUNTER
-      })
-    },
-
-    removeNotification({ commit }, message) {
-      commit('removeNotification', message)
-    },
-
-    getArticles() {
-      return http(`${API_URL}/articles`)
-        .then(response => response.body.items)
+    setTitle({ state }, value) {
+      state.pageTitle = value
     }
   }
 })
+
+http.token = store.state.token
+http.onError = response => {
+  if (response.status === 403) {
+    store.dispatch('notifications/error', response.body.message)
+    return true
+  }
+}
+
+export default store

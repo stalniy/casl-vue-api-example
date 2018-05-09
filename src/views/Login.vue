@@ -22,7 +22,7 @@
 
 <script>
   import { mapActions, mapState } from 'vuex'
-  import { required, email, minLength } from '../validation/index'
+  import { required, email, minLength } from '../validation'
 
   export default {
     data() {
@@ -52,11 +52,14 @@
         }
 
         return this.login(this.details)
-          .then(session => this.$ability.update(session.rules))
+          .then(() => this.$router.push('/'))
           .catch(error => {
             this.notify({ message: error.message, type: 'error' })
           })
       }
+    },
+    created() {
+      this.$store.dispatch('setTitle', 'Login')
     }
   }
 </script>

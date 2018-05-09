@@ -1,6 +1,7 @@
 export default (options) => (store) => {
   if (localStorage.state) {
-    store.replaceState(JSON.parse(localStorage.state))
+    const storedState = JSON.parse(localStorage.state)
+    store.replaceState(Object.assign(store.state, storedState))
   }
 
   return store.subscribe((mutation, state) => {

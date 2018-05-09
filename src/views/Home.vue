@@ -10,6 +10,9 @@
   export default {
     components: {
       ArticleList
+    },
+    created() {
+      this.$store.dispatch('setTitle', 'List of Articles')
     }
   }
 </script>
