@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import storage from './storage'
-import { abilityPlugin } from './ability'
+import { abilityPlugin, ability as appAbility } from './ability'
 import notifications from './notifications'
 import articles from './articles'
 import http from '../services/http'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export const ability = appAbility
+
+export const store = new Vuex.Store({
   plugins: [
     storage({
       storedKeys: ['token', 'rules'],
@@ -70,5 +72,3 @@ http.onError = response => {
     return true
   }
 }
-
-export default store

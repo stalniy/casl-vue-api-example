@@ -2,12 +2,20 @@
   <v-app>
     <v-navigation-drawer app mini-variant v-model="isVisibleMenu">
       <v-list dense class="pt-0">
-        <v-list-tile @click="$router.push('/')">
+        <v-list-tile to="/">
           <v-list-tile-action>
             <v-icon>home</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Home</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile :to="{ name: 'newArticle' }" v-if="$can('create', 'Article')">
+          <v-list-tile-action>
+            <v-icon>add_circle</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Add article</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <template v-if="isLoggedIn">
@@ -76,7 +84,10 @@
 
       logout() {
         return this.$store.dispatch('logout')
-          .then(() => this.$router.replace('/'))
+          .then(() => {
+            this.isVisibleMenu = false
+            this.$router.replace('/')
+          })
       }
     }
   }
