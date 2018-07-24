@@ -1,6 +1,6 @@
 # CASL integration example with Vue + Vuex + REST API
 
-This example shows how to integrate [CASL](github.com/stalniy/casl) auhorization in more or less real [Vue](https://vuejs.org) application with Vuex and REST API. Read [CASL and Cancan](https://medium.com/dailyjs/casl-and-cancan-permissions-sharing-between-ui-and-api-5f1fa8b4bec) for details 
+This example shows how to integrate [CASL](https://github.com/stalniy/casl) auhorization in more or less real [Vue](https://vuejs.org) application with Vuex and REST API. Read [CASL and Cancan](https://medium.com/dailyjs/casl-and-cancan-permissions-sharing-between-ui-and-api-5f1fa8b4bec) for details 
 
 > Generate with vue-cli
 
