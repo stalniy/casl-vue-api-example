@@ -4,7 +4,7 @@
       <v-card-title>
         <div>
           <router-link :to="{ name: 'article', params: article }" tag="h3" class="headline mb-0">{{ article.title }}</router-link>
-          <div>{{ article.body | short }}...</div>
+          <div>{{ article.body | short }}</div>
         </div>
       </v-card-title>
       <v-card-actions>
@@ -53,8 +53,14 @@
         .catch(error => this.error(error.message))
     },
     filters: {
-      short(value) {
-        return value.slice(0, 250)
+      short(rawValue) {
+        const value = rawValue || ''
+
+        if (value > 250) {
+          return `${value.slice(0, 200)}...`
+        }
+
+        return value
       }
     }
   }

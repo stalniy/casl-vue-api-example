@@ -1,12 +1,16 @@
+const STATE_KEY = 'vuex-state'
+
 export default (options) => (store) => {
-  if (localStorage.state) {
-    const storedState = JSON.parse(localStorage.state)
+  const rawStoredState = localStorage[STATE_KEY]
+
+  if (rawStoredState) {
+    const storedState = JSON.parse(rawStoredState)
     store.replaceState(Object.assign(store.state, storedState))
   }
 
   return store.subscribe((mutation, state) => {
-    if (options.destroyOn && options.destroyOn.indexOf(mutation.type) !== -1) {
-      return localStorage.removeItem('state')
+    if (options.destroyOn && options.destroyOn.includes(mutation.type)) {
+      return localStorage.removeItem(STATE_KEY)
     }
 
     const newState = options.storedKeys.reduce((map, key) => {
@@ -14,6 +18,6 @@ export default (options) => (store) => {
       return map
     }, {})
 
-    localStorage.state = JSON.stringify(newState)
+    localStorage[STATE_KEY] = JSON.stringify(newState)
   })
 }

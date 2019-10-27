@@ -1,7 +1,9 @@
-const API_URL = 'http://localhost:3000/api'
+export default function http(url, { headers, data, ...options } = {}) {
+  if (data) {
+    options.body = JSON.stringify(data)
+  }
 
-export default function http(url, { headers, ...options } = {}) {
-  return fetch(`${API_URL}${url}`, {
+  return fetch(`${process.env.VUE_APP_API_URL}${url}`, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',

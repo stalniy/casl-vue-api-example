@@ -42,7 +42,7 @@
       }
     },
     methods: {
-      ...mapActions(['login', 'notify']),
+      ...mapActions(['login']),
 
       loginUser() {
         const isValid = this.$refs.form.validate(true)
@@ -54,7 +54,7 @@
         return this.login(this.details)
           .then(() => this.$router.push('/'))
           .catch(error => {
-            this.notify({ message: error.message, type: 'error' })
+            this.$store.dispatch('notifications/error', error.message)
           })
       }
     },

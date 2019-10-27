@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { Ability } from '@casl/ability'
 import storage from './storage'
-import { abilityPlugin, ability as appAbility } from './ability'
+import abilityPlugin from './ability'
 import notifications from './notifications'
 import articles from './articles'
 import http from '../services/http'
+import router from '../router'
+import { TYPE_KEY } from '../services/utils'
 
 Vue.use(Vuex)
-
-export const ability = appAbility
 
 export const store = new Vuex.Store({
   plugins: [
@@ -33,6 +34,16 @@ export const store = new Vuex.Store({
   getters: {
     isLoggedIn(state) {
       return !!state.token
+    },
+
+    ability() {
+      return new Ability([], {
+        subjectName(subject) {
+          return !subject || typeof subject === 'string' 
+            ? subject 
+            : subject[TYPE_KEY]
+        }
+      })
     }
   },
 
@@ -46,12 +57,13 @@ export const store = new Vuex.Store({
     destroySession(state) {
       state.token = ''
       state.rules = []
+      http.token = null
     }
   },
 
   actions: {
-    login({ commit }, details) {
-      return http('/session', { method: 'POST', body: JSON.stringify(details) })
+    login({ commit }, data) {
+      return http('/session', { method: 'POST', data })
         .then(response => commit('createSession', response.body))
     },
 
@@ -61,14 +73,17 @@ export const store = new Vuex.Store({
 
     setTitle({ state }, value) {
       state.pageTitle = value
+    },
+
+    sessionExpired({ dispatch, commit }) {
+      dispatch('notifications/info', 'Session has been expired')
+      commit('destroySession')
+      router.push('/login')
+    },
+
+    forbidden({ dispatch }, response) {
+      dispatch('notifications/error', response.body.message)
+      router.back()
     }
   }
 })
-
-http.token = store.state.token
-http.onError = response => {
-  if (response.status === 403) {
-    store.dispatch('notifications/error', response.body.message)
-    return true
-  }
-}
