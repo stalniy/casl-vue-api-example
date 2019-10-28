@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout column>
     <ArticleList />
   </v-layout>
 </template>

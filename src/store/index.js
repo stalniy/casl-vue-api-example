@@ -14,7 +14,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   plugins: [
     storage({
-      storedKeys: ['token', 'rules'],
+      storedKeys: ['token', 'rules', 'email'],
       destroyOn: ['destroySession']
     }),
     abilityPlugin
@@ -27,6 +27,7 @@ export const store = new Vuex.Store({
 
   state: {
     token: '',
+    email: '',
     rules: [],
     pageTitle: 'CASL + VUE + VUEX + REST API'
   },
@@ -51,12 +52,14 @@ export const store = new Vuex.Store({
     createSession(state, session) {
       state.token = session.token
       state.rules = session.rules
+      state.email = session.email
       http.token = session.token
     },
 
     destroySession(state) {
       state.token = ''
       state.rules = []
+      state.email = ''
       http.token = null
     }
   },

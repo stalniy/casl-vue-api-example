@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout column>
     <form @submit.prevent="save">
       <v-text-field label="Title" v-model="article.title" single-line :rules="titleValidation"></v-text-field>
       <v-text-field label="Content" v-model="article.body" multi-line :rules="bodyValidation"></v-text-field>

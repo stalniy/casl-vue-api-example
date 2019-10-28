@@ -46,6 +46,8 @@
           <v-icon>menu</v-icon>
         </v-btn>
         <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
+        <v-spacer />
+        <div v-if="email">{{ email }}</div>
       </v-toolbar>
       <v-container fluid fill-height>
         <router-view></router-view>
@@ -73,7 +75,7 @@
       isVisibleMenu: false
     }),
     computed: {
-      ...mapState(['pageTitle']),
+      ...mapState(['pageTitle', 'email']),
       ...mapState('notifications', {
         notifications: 'stack'
       }),
