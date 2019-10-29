@@ -1,6 +1,6 @@
 # CASL integration example with Vue + Vuex + REST API
 
-This example shows how to integrate [CASL](https://github.com/stalniy/casl) auhorization in more or less real [Vue](https://vuejs.org) application with Vuex and REST API. Read [CASL and Cancan](https://medium.com/dailyjs/casl-and-cancan-permissions-sharing-between-ui-and-api-5f1fa8b4bec) for details 
+This example shows how to integrate [CASL](https://github.com/stalniy/casl) auhorization in more or less real [Vue](https://vuejs.org) application with Vuex and REST API. Read [CASL and Cancan](https://medium.com/dailyjs/casl-and-cancan-permissions-sharing-between-ui-and-api-5f1fa8b4bec) for details
 
 > Generate with vue-cli
 
@@ -36,3 +36,10 @@ It's just a showcase that CASL can be seamlessly integrated with awesome [Cancan
 If you setup rails application, there are 2 users available:
 * admin - admin@freaksidea.com / 123456
 * member - member@freaksidea.com / 123456
+
+## Alternative Server side API
+
+You can use [Express based API](https://github.com/stalniy/casl-express-example/tree/vue-api) together with this UI. Pay attention to the branch name, it should be `vue-api`.
+This API uses MongoDB as a database, so you will need to have one running on localhost or you can change the connection string in [src/app.js](https://github.com/stalniy/casl-express-example/blob/vue-api/src/app.js#L36)
+
+Also you will need to change API URL in `.env` file to `http://localhost:3030`

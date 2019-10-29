@@ -40,8 +40,8 @@ export const store = new Vuex.Store({
     ability() {
       return new Ability([], {
         subjectName(subject) {
-          return !subject || typeof subject === 'string' 
-            ? subject 
+          return !subject || typeof subject === 'string'
+            ? subject
             : subject[TYPE_KEY]
         }
       })
