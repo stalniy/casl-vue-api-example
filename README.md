@@ -42,4 +42,9 @@ If you setup rails application, there are 2 users available:
 You can use [Express based API](https://github.com/stalniy/casl-express-example/tree/vue-api) together with this UI. Pay attention to the branch name, it should be `vue-api`.
 This API uses MongoDB as a database, so you will need to have one running on localhost or you can change the connection string in [src/app.js](https://github.com/stalniy/casl-express-example/blob/vue-api/src/app.js#L36)
 
-Also you will need to change API URL in `.env` file to `http://localhost:3030`
+Also you will need to change API URL in `.env` file to `http://localhost:3030`.
+
+There are 3 users available:
+* admin@casl.io / 123456
+* another.writer@casl.io / 123456
+* writer@casl.io / 123456
