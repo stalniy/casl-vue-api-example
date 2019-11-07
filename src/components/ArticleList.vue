@@ -2,11 +2,10 @@
   <div>
     <v-card v-for="article in articles" :key="article.id" class="article">
       <v-card-title>
-        <div>
-          <router-link :to="{ name: 'article', params: article }" tag="h3" class="headline mb-0">{{ article.title }}</router-link>
-          <div>{{ article.body | short }}</div>
-        </div>
+        <router-link :to="{ name: 'article', params: article }" tag="h3" class="headline mb-0">{{ article.title }}</router-link>
+        <div v-if="article.createdBy">{{ article.createdBy.email }}</div>
       </v-card-title>
+      <v-card-text>{{ article.body | short }}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn icon :to="{ name: 'editArticle', params: article }" v-if="$can('update', article)">
@@ -73,5 +72,9 @@
 
   .headline {
     cursor: pointer;
+  }
+
+  .card__title {
+    display: block;
   }
 </style>
