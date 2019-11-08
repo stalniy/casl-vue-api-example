@@ -23,7 +23,11 @@ export default {
         .then(response => response.body.item)
     },
 
-    save(_, { id, ...data }) {
+    save(_, { id, action, published, ...data }) {
+      if (action === 'publish') {
+        data.published = published
+      }
+
       const request = id
         ? http(`/articles/${id}`, { method: 'PATCH', data })
         : http('/articles', { method: 'POST', data })
@@ -32,7 +36,11 @@ export default {
     },
 
     publish({ dispatch }, article) {
-      return dispatch('save', { ...article, published: true })
+      return dispatch('save', {
+        ...article,
+        published: true,
+        action: 'publish'
+      })
     }
   }
 }
