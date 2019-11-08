@@ -6,6 +6,7 @@
 
       <v-btn :to="{ name: 'home' }" small>Back to articles</v-btn>
       <v-btn color="success" small type="submit">Save</v-btn>
+      <v-btn color="success" small @click="publish" v-if="$can('publish', article)">Publish</v-btn>
     </form>
   </v-layout>
 </template>
@@ -19,7 +20,8 @@
       return {
         article: {
           title: '',
-          body: ''
+          body: '',
+          published: false,
         },
         titleValidation: [
           required,
@@ -33,7 +35,8 @@
     methods: {
       ...mapActions('articles', {
         saveArticle: 'save',
-        getArticle: 'findById'
+        getArticle: 'findById',
+        publishArticle: 'publish',
       }),
       ...mapActions('notifications', ['info']),
 
@@ -41,6 +44,14 @@
         return this.saveArticle(this.article)
           .then(() => {
             this.info('Article has been successfully saved')
+            this.$router.push('/')
+          })
+      },
+
+      publish() {
+        return this.publishArticle(this.article)
+          .then(() => {
+            this.info('Article has been successfully published')
             this.$router.push('/')
           })
       }

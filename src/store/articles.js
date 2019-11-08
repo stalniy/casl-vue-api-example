@@ -29,6 +29,10 @@ export default {
         : http('/articles', { method: 'POST', data })
 
       return request.then(response => response.body.item)
+    },
+
+    publish({ dispatch }, article) {
+      return dispatch('save', { ...article, published: true })
     }
   }
 }
