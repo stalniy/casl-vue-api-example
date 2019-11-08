@@ -3,13 +3,18 @@ export default function http(url, { headers, data, ...options } = {}) {
     options.body = JSON.stringify(data)
   }
 
+  const requestHeaders = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    ...headers
+  }
+
+  if (http.token) {
+    requestHeaders.Authorization = http.token
+  }
+
   return fetch(`${process.env.VUE_APP_API_URL}${url}`, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: http.token,
-      ...headers
-    },
+    headers: requestHeaders,
     ...options
   }).then(response => {
     return response.json().then(body => ({
