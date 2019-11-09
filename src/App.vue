@@ -50,7 +50,7 @@
         <div v-if="email">{{ email }}</div>
       </v-toolbar>
       <v-container fluid fill-height>
-        <router-view></router-view>
+        <router-view />
       </v-container>
     </v-content>
     <v-snackbar
@@ -88,7 +88,7 @@
         return this.$store.dispatch('logout')
           .then(() => {
             this.isVisibleMenu = false
-            this.$router.replace('/')
+            this.$router.replace('/login')
           })
       }
     }

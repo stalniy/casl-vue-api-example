@@ -37,7 +37,7 @@ export default {
 
     publish({ dispatch }, article) {
       return dispatch('save', {
-        ...article,
+        id: article.id,
         published: true,
         action: 'publish'
       })
