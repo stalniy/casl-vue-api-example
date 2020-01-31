@@ -7,11 +7,8 @@ This example shows how to integrate [CASL](https://github.com/stalniy/casl) auho
 ## Installation
 
 ``` bash
-# install vue cli 3
-npm install -g @vue/cli
-
 # install dependencies
-npm install
+npm ci
 
 # serve with hot reload at localhost:8080
 npm run serve
